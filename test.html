@@ -1,0 +1,41 @@
+<html>
+<head>
+	<script src="jquery.js" type="text/javascript"></script>
+	
+	<script src="underscore.js" type="text/javascript"></script>
+	<script src="backbone.js" type="text/javascript"></script>
+	<script src="knockout.js" type="text/javascript"></script>
+	<script src="knockback-full-stack.js" type="text/javascript"></script>
+	<script type="text/javascript">
+
+		$(document).ready(function(){
+
+
+			var model = new Backbone.Model({number: 33});
+ 
+			var ViewModel = function(model) {
+			  this.number = kb.observable(model, 'number');
+			  this.formatted_number = kb.observable(model, {
+			    key: 'number',
+			    read: function() { return "#: " + (this.number()); },
+			    write: function(value) { return this.number(value.substring(3)); }
+			  }, this);
+			};
+
+			var view_model = new ViewModel(model);
+			 
+			ko.applyBindings(view_model, $('#kboo_read_write')[0]);
+			//model = new Backbone.Model({number: 33});
+			model.set({number:25});
+
+		});
+		
+	</script>
+</head>
+<body>
+<div id='kboo_read_write'>
+  <input class='input-small pull-right' data-bind="value: formatted_number, valueUpdate: 'keyup'"/>
+  <label data-bind="text: number"></label>
+</div>
+</body>
+</html>
